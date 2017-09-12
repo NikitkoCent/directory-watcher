@@ -1,0 +1,17 @@
+*
+
+!.gitignore
+
+!controller/
+!controller/*
+
+!model/
+!model/*
+
+!view/
+!view/*
+
+!*.pro
+
+!*.h
+!*.cpp
