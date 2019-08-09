@@ -43,3 +43,5 @@ HEADERS += \
     model/windows/win_extend_path_limit.h \
 
 FORMS += view/mainwindow.ui
+
+RC_ICONS = ../resources/app_icon.ico

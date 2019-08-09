@@ -3,6 +3,7 @@
 !.gitignore
 
 !build/
+!resources/
 !src/
 !LICENSE
 !README.md
