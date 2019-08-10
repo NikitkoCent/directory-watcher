@@ -184,7 +184,7 @@ private:
     void refillFilesList()
     {
         files.clear();
-        WIN32_FIND_DATA findFileData;
+        WIN32_FIND_DATAW findFileData;
 
         auto hFind = FindFirstFileW(searchPath.getPathString().c_str(), &findFileData);
         if (hFind == INVALID_HANDLE_VALUE)
@@ -213,7 +213,7 @@ private:
 
                 files.emplace_back(findFileData.cFileName);
             }
-            while (FindNextFile(hFind, &findFileData) != 0);
+            while (FindNextFileW(hFind, &findFileData) != 0);
 
             const auto err = GetLastError();
             if ((err != ERROR_SUCCESS) && (err != ERROR_NO_MORE_FILES))     // system buffer overflows

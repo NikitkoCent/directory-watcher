@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "model/directory_watcher.h"
-#include "model/file_operations.h"
+#include "../model/file_operations.h"
 #include <type_traits>              // std::remove_pointer, std::remove_reference
 #include <chrono>                   // std::chrono::system_clock
 #include <ctime>                    // std::time_t
