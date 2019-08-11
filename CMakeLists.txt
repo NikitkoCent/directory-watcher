@@ -40,6 +40,10 @@ add_executable(directory-watcher
                src/view/mainwindow.h
                src/view/mainwindow.cpp)
 
+if (WIN32)
+    target_sources(directory-watcher PRIVATE resources/win_resources.rc)
+endif()
+
 target_link_libraries(directory-watcher
                       Qt5::Core
                       Qt5::Gui
