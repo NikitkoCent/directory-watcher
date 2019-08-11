@@ -13,7 +13,7 @@ This project is CMake-based so you need to use CMake to build it.
 ### General notes
 * Make sure that your Qt toolchain architecture corresponds to compiler architecture (for example, if you want to use MSVC in Win64 configuration, you need appropriate Qt toolchain, like `msvc2015_64` in case of MSVS2015)
 * You need to pass the path of Qt CMake modules via `CMAKE_PREFIX_PATH`.
-* In some cases you also need to pass some additional information to CMake (like in [THIS EXAMPLE](#qt_mingw_example)).
+* In some cases you also need to pass some additional information to CMake (like in [this example](#build-using-mingw-taken-from-qt-installation)).
 * In case of problems, see [this official Qt<->CMake manual](https://doc.qt.io/qt-5/cmake-manual.html)
 
 ### Microsoft Visual Studio 2015 Win64 build
@@ -24,7 +24,6 @@ cmake -G"Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH="Path/To/Qt/version/ms
 cmake --build . --config Release
 ```
 
-<a name="qt_mingw_example"></a>
 ### Build using MinGW taken from Qt installation
 Please make sure you have `Path/To/Qt/Tools/mingw*_*/bin` in your `PATH` environment variable.
 
