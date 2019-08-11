@@ -16,11 +16,14 @@ This project is CMake-based so you need to use CMake to build it.
 * In some cases you also need to pass some additional information to CMake (like in [this example](#build-using-mingw-taken-from-qt-installation)).
 * In case of problems, see [this official Qt<->CMake manual](https://doc.qt.io/qt-5/cmake-manual.html)
 
-### Microsoft Visual Studio 2015 Win64 build
-Run from project root:
+### Build using Microsoft Visual Studio 2015 (Win64 configuration)
+Generate solution (run from project root):
 ```bat
 cd build
 cmake -G"Visual Studio 14 2015 Win64" -DCMAKE_PREFIX_PATH="Path/To/Qt/version/msvc2015_64/lib/cmake/Qt5" ..
+```
+... and build:
+```bat
 cmake --build . --config Release
 ```
 
