@@ -48,3 +48,20 @@ target_link_libraries(directory-watcher
                       Qt5::Core
                       Qt5::Gui
                       Qt5::Widgets)
+
+# ========================================== windeployqt ==========================================
+get_target_property(QMAKE_PATH Qt5::qmake IMPORTED_LOCATION)
+get_filename_component(QT_BIN_DIR "${QMAKE_PATH}" DIRECTORY)
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_BIN_DIR}")
+
+set(PATH_DELIM :)
+if (WIN32)
+    set(PATH_DELIM ;)
+endif()
+
+add_custom_command(TARGET directory-watcher POST_BUILD
+                   COMMAND "${CMAKE_COMMAND}" -E echo "Path${PATH_DELIM} $ENV{PATH}"
+                   COMMAND "${CMAKE_COMMAND}" -E env "PATH=${QT_BIN_DIR}${PATH_DELIM}$ENV{PATH}"
+                           "${WINDEPLOYQT_EXECUTABLE}" "$<TARGET_FILE:directory-watcher>"
+                   COMMENT "Running windeployqt at ${WINDEPLOYQT_EXECUTABLE}...")
+# ======================================== end windeployqt ========================================
