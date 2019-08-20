@@ -2,6 +2,9 @@
 
 !.gitignore
 
+!build/
+!build/*
+
 !controller/
 !controller/*
 
