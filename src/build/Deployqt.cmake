@@ -1,6 +1,9 @@
+# The original src was taken from:
+#
 # The MIT License (MIT)
 #
 # Copyright (c) 2018 Nathan Osman
+# Copyright (c) 2019 Nikita Provotorov
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,19 +23,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Doing this with MSVC 2015+ requires CMake 3.6+
+if (MSVC_VERSION VERSION_EQUAL 1900 OR MSVC_VERSION VERSION_GREATER 1900)
+    cmake_minimum_required(VERSION 3.6)
+endif()
+
 find_package(Qt5Core REQUIRED)
 
 # Retrieve the absolute path to qmake and then use that path to find
 # the windeployqt and macdeployqt binaries
-get_target_property(_qmake_executable Qt5::qmake IMPORTED_LOCATION)
-get_filename_component(_qt_bin_dir "${_qmake_executable}" DIRECTORY)
+get_target_property(QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+get_filename_component(QT_BIN_DIR "${QMAKE_EXECUTABLE}" DIRECTORY)
 
-find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_BIN_DIR}")
 if(WIN32 AND NOT WINDEPLOYQT_EXECUTABLE)
     message(FATAL_ERROR "windeployqt not found")
 endif()
 
-find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${_qt_bin_dir}")
+find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
 if(APPLE AND NOT MACDEPLOYQT_EXECUTABLE)
     message(FATAL_ERROR "macdeployqt not found")
 endif()
@@ -42,9 +50,12 @@ endif()
 function(windeployqt target)
 
     # Run windeployqt immediately after build
+    # about --no-compiler-runtime: windeployqt doesn't work correctly with
+    #   the system runtime libraries, so we fall back to one of CMake's own
+    #   modules for copying them over
     add_custom_command(TARGET ${target} POST_BUILD
         COMMAND "${CMAKE_COMMAND}" -E
-            env PATH="${_qt_bin_dir}" "${WINDEPLOYQT_EXECUTABLE}"
+            env PATH="${QT_BIN_DIR}" "${WINDEPLOYQT_EXECUTABLE}"
                 --verbose 0
                 --no-compiler-runtime
                 --no-angle
@@ -53,16 +64,9 @@ function(windeployqt target)
         COMMENT "Deploying Qt..."
     )
 
-    # windeployqt doesn't work correctly with the system runtime libraries,
-    # so we fall back to one of CMake's own modules for copying them over
-
-    # Doing this with MSVC 2015 requires CMake 3.6+
-    if((MSVC_VERSION VERSION_EQUAL 1900 OR MSVC_VERSION VERSION_GREATER 1900)
-            AND CMAKE_VERSION VERSION_LESS "3.6")
-        message(WARNING "Deploying with MSVC 2015+ requires CMake 3.6+")
-    endif()
-
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
     set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+
     include(InstallRequiredSystemLibraries)
     foreach(lib ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS})
         get_filename_component(filename "${lib}" NAME)
