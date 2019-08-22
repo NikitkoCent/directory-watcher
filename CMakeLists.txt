@@ -54,6 +54,6 @@ include(src/build/DeployQt.cmake)
 windeployqt(directory-watcher)
 # ======================================== end windeployqt ========================================
 
-install(DIRECTORY "$<TARGET_FILE_DIR:directory-watcher>"
+install(DIRECTORY "$<TARGET_FILE_DIR:directory-watcher>/"
         DESTINATION "$<CONFIG>/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}"
         COMPONENT application)
