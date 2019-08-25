@@ -4,7 +4,8 @@ project(directory-watcher CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_REQUIRED ON)
 
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(CMAKE_INSTALL_PREFIX
+    "${CMAKE_CURRENT_SOURCE_DIR}/bin/\${BUILD_TYPE}/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -55,5 +56,5 @@ windeployqt(directory-watcher)
 # ======================================== end windeployqt ========================================
 
 install(DIRECTORY "$<TARGET_FILE_DIR:directory-watcher>/"
-        DESTINATION "$<CONFIG>/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}"
+        DESTINATION "${PROJECT_NAME}"
         COMPONENT application)
