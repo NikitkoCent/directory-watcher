@@ -2,6 +2,7 @@
 
 !.gitignore
 
+!bin/
 !build/
 !resources/
 !src/
