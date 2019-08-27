@@ -4,8 +4,10 @@ project(directory-watcher CXX)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_REQUIRED ON)
 
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CMAKE_INSTALL_PREFIX
-    "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}")
+    "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}/${CMAKE_VS_PLATFORM_NAME}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -52,3 +54,5 @@ include(src/build/DeployQt.cmake)
 
 windeployqt(directory-watcher "\${CMAKE_INSTALL_CONFIG_NAME}")
 # ======================================== end windeployqt ========================================
+
+include(CPack)
