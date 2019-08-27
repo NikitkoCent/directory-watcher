@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_REQUIRED ON)
 
 set(CMAKE_INSTALL_PREFIX
-    "${CMAKE_CURRENT_SOURCE_DIR}/bin/\${BUILD_TYPE}/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}")
+    "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -16,8 +16,6 @@ if (CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
-
-include(src/build/SetupCPack.cmake)
 
 add_executable(directory-watcher WIN32
                src/main.cpp
@@ -52,9 +50,5 @@ target_link_libraries(directory-watcher
 # ========================================== windeployqt ==========================================
 include(src/build/DeployQt.cmake)
 
-windeployqt(directory-watcher)
+windeployqt(directory-watcher "\${CMAKE_INSTALL_CONFIG_NAME}")
 # ======================================== end windeployqt ========================================
-
-install(DIRECTORY "$<TARGET_FILE_DIR:directory-watcher>/"
-        DESTINATION "${PROJECT_NAME}"
-        COMPONENT application)

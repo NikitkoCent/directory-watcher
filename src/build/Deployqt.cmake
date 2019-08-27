@@ -1,8 +1,6 @@
-# The original src was taken from:
-#
 # The MIT License (MIT)
 #
-# Copyright (c) 2018 Nathan Osman
+# Copyright (c) 2017-2018 Nathan Osman
 # Copyright (c) 2019 Nikita Provotorov
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,10 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Doing this with MSVC 2015+ requires CMake 3.6+
-if (MSVC_VERSION VERSION_EQUAL 1900 OR MSVC_VERSION VERSION_GREATER 1900)
-    cmake_minimum_required(VERSION 3.6)
-endif()
+cmake_minimum_required(VERSION 3.8)
 
 find_package(Qt5Core REQUIRED)
 
@@ -45,48 +40,56 @@ if(APPLE AND NOT MACDEPLOYQT_EXECUTABLE)
     message(FATAL_ERROR "macdeployqt not found")
 endif()
 
-# Add commands that copy the required Qt files to the same directory as the
-# target after being built as well as including them in final installation
-function(windeployqt target)
+# Add commands that copy the Qt runtime to the target's output directory after
+# build and install the Qt runtime to the specified directory
+function(windeployqt target directory)
 
     # Run windeployqt immediately after build
-    # about --no-compiler-runtime: windeployqt doesn't work correctly with
-    #   the system runtime libraries, so we fall back to one of CMake's own
-    #   modules for copying them over
     add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND "${CMAKE_COMMAND}" -E
-            env PATH="${QT_BIN_DIR}" "${WINDEPLOYQT_EXECUTABLE}"
-                --verbose 0
-                --no-compiler-runtime
-                --no-angle
-                --no-opengl-sw
-                \"$<TARGET_FILE:${target}>\"
-        COMMENT "Deploying Qt..."
+        COMMAND "${CMAKE_COMMAND}"
+                -D TARGET="${target}"
+                -D TARGET_EXECUTABLE="$<TARGET_FILE:${target}>"
+                -D QT_BIN_DIR="${QT_BIN_DIR}"
+                -D DEPLOYQT_EXECUTABLE="${WINDEPLOYQT_EXECUTABLE}"
+                -D CONFIG="$<CONFIG>"
+                -D CMAKE_CXX_COMPILER="${CMAKE_CXX_COMPILER}"
+                -D CMAKE_C_COMPILER="${CMAKE_C_COMPILER}"
+                -P "${CMAKE_CURRENT_SOURCE_DIR}/src/build/GatherQtDependencies.cmake"
+        COMMAND "${CMAKE_COMMAND}"
+                -D TARGET="${target}"
+                -D CONFIG="$<CONFIG>"
+                -D TARGET_INSTALL_DIRECTORY="$<TARGET_FILE_DIR:${target}>"
+                -P "${CMAKE_CURRENT_SOURCE_DIR}/src/build/InstallDependencies.cmake"
     )
 
-    set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
-    set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
-
-    include(InstallRequiredSystemLibraries)
-    foreach(lib ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS})
-        get_filename_component(filename "${lib}" NAME)
-        add_custom_command(TARGET ${target} POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E
-                copy_if_different "${lib}" \"$<TARGET_FILE_DIR:${target}>\"
-            COMMENT "Copying ${filename}..."
-        )
-    endforeach()
-endfunction()
-
-# Add commands that copy the required Qt files to the application bundle
-# represented by the target.
-function(macdeployqt target)
-    add_custom_command(TARGET ${target} POST_BUILD
-        COMMAND "${MACDEPLOYQT_EXECUTABLE}"
-            \"$<TARGET_FILE_DIR:${target}>/../..\"
-            -always-overwrite
-        COMMENT "Deploying Qt..."
+    # install(CODE ...) doesn't support generator expressions, but
+    # file(GENERATE ...) does - store the path in a file
+    file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${target}_path"
+         CONTENT "$<TARGET_FILE:${target}>"
     )
+
+    file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/${target}_path_name"
+         CONTENT "$<TARGET_FILE_NAME:${target}>"
+    )
+
+    # Before installation, run a series of commands that copy each of the Qt
+    # runtime files to the appropriate directory for installation
+    install(CODE
+        "
+            file(READ \"${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/${target}_path\" target_path)
+            file(READ \"${CMAKE_CURRENT_BINARY_DIR}/\${CMAKE_INSTALL_CONFIG_NAME}/${target}_path_name\" target_path_name)
+
+            execute_process(COMMAND \"${CMAKE_COMMAND}\"
+                            -D TARGET=${target}
+                            -D TARGET_INSTALL_DIRECTORY=${CMAKE_INSTALL_PREFIX}/${directory}
+                            -D CONFIG=\${CMAKE_INSTALL_CONFIG_NAME}
+                            -P \"${CMAKE_CURRENT_SOURCE_DIR}/src/build/InstallDependencies.cmake\"
+                            COMMAND \"${CMAKE_COMMAND}\"
+                            -E copy \${target_path} ${CMAKE_INSTALL_PREFIX}/${directory}/\${target_path_name}
+            )
+        "
+    )
+
 endfunction()
 
-mark_as_advanced(WINDEPLOYQT_EXECUTABLE MACDEPLOYQT_EXECUTABLE)
+mark_as_advanced(WINDEPLOYQT_EXECUTABLE)
