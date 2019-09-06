@@ -7,7 +7,11 @@ set(CMAKE_CXX_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_INSTALL_PREFIX
-    "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_ID}_${CMAKE_CXX_COMPILER_VERSION}/${CMAKE_VS_PLATFORM_NAME}")
+    "${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}")
+
+if (CMAKE_VS_PLATFORM_NAME)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/${CMAKE_VS_PLATFORM_NAME}")
+endif ()
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -52,7 +56,8 @@ target_link_libraries(directory-watcher
 # ========================================== windeployqt ==========================================
 include(src/build/DeployQt.cmake)
 
+# Will be installed into ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_CONFIG_NAME}
 windeployqt(directory-watcher "\${CMAKE_INSTALL_CONFIG_NAME}")
 # ======================================== end windeployqt ========================================
 
-include(CPack)
+include(src/build/SetupCPack.cmake)
