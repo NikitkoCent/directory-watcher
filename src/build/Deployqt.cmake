@@ -81,11 +81,11 @@ function(windeployqt target directory)
 
             execute_process(COMMAND \"${CMAKE_COMMAND}\"
                             -D TARGET=${target}
-                            -D TARGET_INSTALL_DIRECTORY=${CMAKE_INSTALL_PREFIX}/${directory}
+                            -D TARGET_INSTALL_DIRECTORY=\${CMAKE_INSTALL_PREFIX}/${directory}
                             -D CONFIG=\${CMAKE_INSTALL_CONFIG_NAME}
                             -P \"${CMAKE_CURRENT_SOURCE_DIR}/src/build/InstallDependencies.cmake\"
                             COMMAND \"${CMAKE_COMMAND}\"
-                            -E copy \${target_path} ${CMAKE_INSTALL_PREFIX}/${directory}/\${target_path_name}
+                            -E copy \${target_path} \${CMAKE_INSTALL_PREFIX}/${directory}/\${target_path_name}
             )
         "
     )
