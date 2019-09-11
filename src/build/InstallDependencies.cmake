@@ -1,0 +1,24 @@
+file(STRINGS "${CONFIG}/${TARGET}_dependencies" DEPENDENCIES_RAW)
+
+string(REPLACE "[\r\n]+" " " DEPENDENCIES "${DEPENDENCIES_RAW}")
+string(REGEX REPLACE "^\"" "" DEPENDENCIES "${DEPENDENCIES}")
+string(REGEX REPLACE "\"$" "" DEPENDENCIES "${DEPENDENCIES}")
+string(REPLACE "\" \"" ";" DEPENDENCIES "${DEPENDENCIES}")
+string(REPLACE "\";\"" ";" DEPENDENCIES "${DEPENDENCIES}")
+
+file(TO_CMAKE_PATH "${DEPENDENCIES}" DEPENDENCIES)
+
+list(LENGTH DEPENDENCIES DEPS_SIZE)
+
+while (DEPS_SIZE GREATER 1)
+    list(GET DEPENDENCIES 0 src)
+    list(GET DEPENDENCIES 1 dst)
+
+    execute_process(
+        COMMAND "${CMAKE_COMMAND}" -E
+                copy "${src}" "${TARGET_INSTALL_DIRECTORY}/${dst}"
+    )
+
+    list(REMOVE_AT DEPENDENCIES 0 1)
+    list(LENGTH DEPENDENCIES DEPS_SIZE)
+endwhile()

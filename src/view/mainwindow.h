@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "model/qt_directory_watcher_worker.h"
-#include "model/directory_watcher.h"
+#include "../model/qt_directory_watcher_worker.h"
+#include "../model/directory_watcher.h"
 #include <QMainWindow>
 #include <QObject>
 #include <exception>        // std::exception_ptr

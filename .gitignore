@@ -2,8 +2,12 @@
 
 !.gitignore
 
+!bin/
 !build/
 !resources/
 !src/
+
+!CMakeLists.txt
+
 !LICENSE
 !README.md

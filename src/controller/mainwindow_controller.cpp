@@ -1,7 +1,7 @@
 #include "../view/mainwindow.h"
 #include "../model/file_operations.h"
 #include "../model/path.h"
-#include "ui_mainwindow.h"
+#include "../view/ui_mainwindow.h"
 #include <stdexcept>        // std::exception
 #include <utility>          // std::move
 #include <QFileDialog>
@@ -20,7 +20,7 @@ void MainWindowController::changeTrackedPath()
 {
     try
     {
-        const QString name = std::move(QFileDialog::getExistingDirectory(parent, tr("Choose directory")));
+        const QString name = QFileDialog::getExistingDirectory(parent, tr("Choose directory"));
         if (name.isEmpty())
         {
             return;
