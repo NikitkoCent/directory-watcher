@@ -40,7 +40,7 @@ deploy:
         secure: wxFWuFf7EOYso+dKbWufDGcaHbN3+vVe5vm2vbpHERhxF21/0NJOa0C8cxmBbVUl
     draft: true
     prerelease: false
-    artifact: bin/packages/*.zip;bin/packages/*.tar.gz
+    artifact: bin/packages/*.zip,bin/packages/*.tar.gz
     on:
         branch: add-ci_2
         APPVEYOR_REPO_TAG: true
