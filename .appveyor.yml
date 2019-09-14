@@ -9,7 +9,7 @@ environment:
 #          CMAKE_BUILD_FLAGS: ""
 
 install:
-    - cmd: "set PATH=%ADDITIONAL_PATH%;%PATH% && echo %PATH%"
+    - set PATH=%ADDITIONAL_PATH%;%PATH% && echo %PATH%
 
 build_script:
     - cd build
