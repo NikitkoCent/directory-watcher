@@ -6,7 +6,6 @@ environment:
           CMAKE_BUILD_FLAGS: "--config Release"
         - CMAKE_CONFIG_FLAGS: "-G\"MinGW Makefiles\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/mingw73_32/lib/cmake/Qt5\" -DCMAKE_MAKE_PROGRAM=\"mingw32-make.exe\" -DCMAKE_BUILD_TYPE=Release"
           ADDITIONAL_PATH: "C:\\Qt\\Tools\\mingw730_32\\bin"
-#          CMAKE_BUILD_FLAGS: ""
 
 install:
     - set PATH=%ADDITIONAL_PATH%;%PATH%
@@ -14,5 +13,5 @@ install:
 
 build_script:
     - cd build
-    - cmake %CMAKE_CONFIG_FLAGS% --verbose ..
-    - cmake --build . --verbose %CMAKE_BUILD_FLAGS%
+    - cmake %CMAKE_CONFIG_FLAGS% ..
+    - cmake --build . %CMAKE_BUILD_FLAGS%
