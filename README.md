@@ -1,4 +1,4 @@
-# directory_watcher
+# directory_watcher [![Build status](https://ci.appveyor.com/api/projects/status/3x26930cxx7c6ykc/branch/master?svg=true)](https://ci.appveyor.com/project/NikitkoCent/directory-watcher/branch/master)
 Application for directory files monitoring
 
 ## Build
