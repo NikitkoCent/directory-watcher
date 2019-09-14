@@ -5,11 +5,13 @@ environment:
         - CMAKE_CONFIG_FLAGS: "-G\"Visual Studio 15 2017 Win64\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/msvc2017_64/lib/cmake/Qt5\""
           CMAKE_BUILD_FLAGS: "--config Release"
         - CMAKE_CONFIG_FLAGS: "-G\"MinGW Makefiles\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/mingw73_32/lib/cmake/Qt5\" -DCMAKE_MAKE_PROGRAM=\"mingw32-make.exe\" -DCMAKE_BUILD_TYPE=Release"
-          ADDITIONAL_PATH: "C:/Qt/Tools/mingw73_32/bin"
+          ADDITIONAL_PATH: "C:\\Qt\\Tools\\mingw73_32\\bin"
 #          CMAKE_BUILD_FLAGS: ""
 
 install:
-    - echo %ADDITIONAL_PATH% && set PATH=%ADDITIONAL_PATH%;%PATH% && echo %PATH%
+    - echo %ADDITIONAL_PATH%
+    - set PATH=%ADDITIONAL_PATH%;%PATH%
+    - echo %PATH%
 
 build_script:
     - cd build
