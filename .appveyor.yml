@@ -17,8 +17,7 @@ for:
 -
     matrix:
         only:
-            - environment:
-                - BUILD_NAME: "MSVS 2017 x64 Release"
+            - BUILD_NAME: "MSVS 2017 x64 Release"
 
     install:
         - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -26,8 +25,7 @@ for:
 -
     matrix:
         only:
-            - environment:
-                - BUILD_NAME: "MinGW 7.3.0 x32 Release"
+            - BUILD_NAME: "MinGW 7.3.0 x32 Release"
 
     install:
         - set PATH=C:\\Qt\\Tools\\mingw730_32\\bin;%PATH%
