@@ -9,11 +9,8 @@ environment:
 #          CMAKE_BUILD_FLAGS: ""
 
 install:
-    - echo %ADDITIONAL_PATH%
     - set PATH=%ADDITIONAL_PATH%;%PATH%
     - echo %PATH%
-    - ls C:\\Qt\\Tools
-    - cmd /C "%ADDITIONAL_PATH%/g++ --version"
 
 build_script:
     - cd build
