@@ -29,3 +29,7 @@ build_script:
     - cd build
     - cmake %CMAKE_CONFIG_FLAGS% ..
     - cmake --build . --target package %CMAKE_BUILD_FLAGS%
+
+artifacts:
+    - path: bin/packages/*.zip
+    - path: bin/packages/*.tar.gz
