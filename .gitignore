@@ -1,5 +1,7 @@
 *
 
+!.appveyor.yml
+
 !.gitignore
 
 !bin/
