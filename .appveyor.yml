@@ -9,9 +9,28 @@ environment:
           CMAKE_CONFIG_FLAGS: "-G\"MinGW Makefiles\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/mingw73_32/lib/cmake/Qt5\" -DCMAKE_MAKE_PROGRAM=\"mingw32-make.exe\" -DCMAKE_BUILD_TYPE=Release"
           ADDITIONAL_PATH: "C:\\Qt\\Tools\\mingw730_32\\bin"
 
-install:
-    - set PATH=%ADDITIONAL_PATH%;%PATH%
-    - echo %PATH%
+#install:
+#    - set PATH=%ADDITIONAL_PATH%;%PATH%
+#    - echo %PATH%
+
+for:
+-
+    matrix:
+        only:
+            - environment:
+                BUILD_NAME: "MSVS 2017 x64 Release"
+
+    install:
+        - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+-
+    matrix:
+        only:
+            - environment:
+                BUILD_NAME: "MinGW 7.3.0 x32 Release"
+
+    install:
+        - set PATH=C:\\Qt\\Tools\\mingw730_32\\bin;%PATH%
 
 build_script:
     - cd build
