@@ -1,6 +1,8 @@
 image: Visual Studio 2017
 
 environment:
+  CMAKE_RELEASE_NAME: "cmake-3.8.0-win64-x64"
+
   matrix:
     - BUILD_NAME: "MSVS 2017 x64 Release"
       CMAKE_CONFIG_FLAGS: "-G\"Visual Studio 15 2017 Win64\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/msvc2017_64/lib/cmake/Qt5\""
@@ -14,7 +16,7 @@ for:
     only:
       - BUILD_NAME: "MSVS 2017 x64 Release"
 
-  install:
+  before_build:
     - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 -
@@ -22,8 +24,15 @@ for:
     only:
       - BUILD_NAME: "MinGW 7.3.0 x32 Release"
 
-  install:
+  before_build:
     - set PATH=C:\\Qt\\Tools\\mingw730_32\\bin;%PATH%
+
+install:
+  - cmake --version
+  - curl -fsS -o %CMAKE_RELEASE_NAME%.zip https://github.com/Kitware/CMake/releases/download/v3.8.0/%CMAKE_RELEASE_NAME%.zip
+  - 7z x -o"%CMAKE_RELEASE_NAME%"
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\\%CMAKE_RELEASE_NAME%\\bin:%PATH%
+  - cmake --version
 
 build_script:
   - cd build
