@@ -9,7 +9,7 @@ This project is CMake-based so you need to use CMake to build it.
 * C++14-compatible compiler;
 * Qt5 installation;
 * Installed Qt toolchain that support chosen compiler;
-* CMake 3.8.0 or higher.
+* CMake 3.10.0 or higher.
 
 ### General notes
 * Make sure that your Qt toolchain architecture corresponds to compiler architecture (for example, if you want to use MSVC in Win64 configuration, you need appropriate Qt toolchain, like `msvc2015_64` in case of MSVS2015);
