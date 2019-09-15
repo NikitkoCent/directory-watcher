@@ -1,5 +1,15 @@
-# directory_watcher [![Build status](https://ci.appveyor.com/api/projects/status/3x26930cxx7c6ykc/branch/master?svg=true)](https://ci.appveyor.com/project/NikitkoCent/directory-watcher/branch/master)
-Application for directory files monitoring
+# directory-watcher [![Build status](https://ci.appveyor.com/api/projects/status/3x26930cxx7c6ykc/branch/master?svg=true)](https://ci.appveyor.com/project/NikitkoCent/directory-watcher/branch/master)
+Qt-based application-example for tracking directory contents using WinAPI methods such as:
+* ReadDirectoryChanges, WaitForMultipleObjects
+* GetOverlappedResult
+* FindFirstFile, FindNextFile
+
+<details>
+<summary>Appearance</summary>
+
+![Raw title](resources/example.png "Title")
+
+</details>
 
 ## Build
 This project is CMake-based so you need to use CMake to build it.
