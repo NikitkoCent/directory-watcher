@@ -25,13 +25,14 @@ for:
       - BUILD_NAME: "MinGW 7.3.0 x32 Release"
 
   before_build:
-    - set PATH=C:\\Qt\\Tools\\mingw730_32\\bin;%PATH%
+    - set PATH=C:\Qt\Tools\mingw730_32\bin;%PATH%
 
 install:
+  - mkdir deps
   - cmake --version
-  - curl -L -o %CMAKE_RELEASE_NAME%.zip https://github.com/Kitware/CMake/releases/download/v3.10.0/%CMAKE_RELEASE_NAME%.zip
-  - 7z x %CMAKE_RELEASE_NAME%.zip -o"%CMAKE_RELEASE_NAME%"
-  - set PATH=%APPVEYOR_BUILD_FOLDER%\%CMAKE_RELEASE_NAME%\%CMAKE_RELEASE_NAME%\bin;%PATH%
+  - curl -L -o deps\%CMAKE_RELEASE_NAME%.zip https://github.com/Kitware/CMake/releases/download/v3.10.0/%CMAKE_RELEASE_NAME%.zip
+  - 7z x deps\%CMAKE_RELEASE_NAME%.zip -o"deps\%CMAKE_RELEASE_NAME%"
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\deps\%CMAKE_RELEASE_NAME%\%CMAKE_RELEASE_NAME%\bin;%PATH%
   - cmake --version
 
 build_script:
