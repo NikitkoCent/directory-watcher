@@ -1,0 +1,55 @@
+image: Visual Studio 2017
+
+environment:
+  CMAKE_RELEASE_NAME: "cmake-3.10.0-win64-x64"
+
+  matrix:
+    - BUILD_NAME: "MSVS 2017 x64 Release"
+      CMAKE_CONFIG_FLAGS: "-G\"Visual Studio 15 2017 Win64\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/msvc2017_64/lib/cmake/Qt5\""
+      CMAKE_BUILD_FLAGS: "--config Release"
+    - BUILD_NAME: "MinGW 7.3.0 x32 Release"
+      CMAKE_CONFIG_FLAGS: "-G\"MinGW Makefiles\" -DCMAKE_PREFIX_PATH=\"C:/Qt/5.13.0/mingw73_32/lib/cmake/Qt5\" -DCMAKE_MAKE_PROGRAM=\"mingw32-make.exe\" -DCMAKE_BUILD_TYPE=Release"
+
+for:
+-
+  matrix:
+    only:
+      - BUILD_NAME: "MSVS 2017 x64 Release"
+
+  before_build:
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+-
+  matrix:
+    only:
+      - BUILD_NAME: "MinGW 7.3.0 x32 Release"
+
+  before_build:
+    - set PATH=C:\Qt\Tools\mingw730_32\bin;%PATH%
+
+install:
+  - mkdir deps
+  - cmake --version
+  - curl -L -o deps\%CMAKE_RELEASE_NAME%.zip https://github.com/Kitware/CMake/releases/download/v3.10.0/%CMAKE_RELEASE_NAME%.zip
+  - 7z x deps\%CMAKE_RELEASE_NAME%.zip -o"deps\%CMAKE_RELEASE_NAME%"
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\deps\%CMAKE_RELEASE_NAME%\%CMAKE_RELEASE_NAME%\bin;%PATH%
+  - cmake --version
+
+build_script:
+  - cd build
+  - cmake %CMAKE_CONFIG_FLAGS% ..
+  - cmake --build . --target package %CMAKE_BUILD_FLAGS%
+
+artifacts:
+  - path: bin/packages/*.zip
+  - path: bin/packages/*.tar.gz
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: wxFWuFf7EOYso+dKbWufDGcaHbN3+vVe5vm2vbpHERhxF21/0NJOa0C8cxmBbVUl
+  draft: true
+  prerelease: false
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
