@@ -1,4 +1,4 @@
-# directory-watcher [![Build status](https://ci.appveyor.com/api/projects/status/3x26930cxx7c6ykc/branch/master?svg=true)](https://ci.appveyor.com/project/NikitkoCent/directory-watcher/branch/master)
+# directory-watcher [![Build status](https://ci.appveyor.com/api/projects/status/3x26930cxx7c6ykc/branch/master?svg=true)](https://ci.appveyor.com/project/NikitkoCent/directory-watcher/branch/master) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/NikitkoCent/directory-watcher)
 Qt-based application-example for tracking directory contents using WinAPI methods such as:
 * [`ReadDirectoryChanges`](https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-readdirectorychangesw), [`WaitForMultipleObjects`](https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitformultipleobjects);
 * [`GetOverlappedResult`](https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-getoverlappedresult);
