@@ -32,7 +32,7 @@ install:
   - curl -L -o %CMAKE_RELEASE_NAME%.zip https://github.com/Kitware/CMake/releases/download/v3.8.0/%CMAKE_RELEASE_NAME%.zip
   - 7z x %CMAKE_RELEASE_NAME%.zip -o"%CMAKE_RELEASE_NAME%"
   - ls %CMAKE_RELEASE_NAME%
-  - set PATH=%APPVEYOR_BUILD_FOLDER%\\%CMAKE_RELEASE_NAME%\\bin:%PATH%
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\\%CMAKE_RELEASE_NAME%\\%CMAKE_RELEASE_NAME%\\bin:%PATH%
   - cmake --version
 
 build_script:
